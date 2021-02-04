@@ -2,7 +2,9 @@ import { Db, MongoClient } from 'mongodb';
 import { createArrayCsvWriter } from 'csv-writer';
 import AdmZip from 'adm-zip';
 import Client from 'ssh2-sftp-client';
-import tmp, { FileResult } from 'tmp';
+import os from 'os';
+import path from 'path';
+import tmp from 'tmp';
 import log from './util/log';
 import { ENVIRONMENT } from './util/secrets';
 import fs from 'fs';
@@ -46,10 +48,23 @@ const timeslotsHeader = [
   'nb_heures',
   'nb_lignes',
 ];
+
+const getZipCode = (center: {
+  publicInformation: { address: { zipCode: string } };
+}) => {
+  return (
+    (center.publicInformation &&
+      center.publicInformation.address &&
+      center.publicInformation.address.zipCode &&
+      center.publicInformation.address.zipCode.trim()) ||
+    ''
+  );
+};
+
 class VaccinationStatsExporter {
-  private tmpAppointments: FileResult;
-  private tmpTimeSlots: FileResult;
-  private tmpZip: FileResult;
+  private tmpAppointments: string;
+  private tmpTimeSlots: string;
+  private tmpZip: string;
 
   private csvWriterAppointments: CsvWriter<any>;
   private csvWriterTimeslots: CsvWriter<any>;
@@ -57,28 +72,31 @@ class VaccinationStatsExporter {
   private db: Db;
 
   constructor() {
-    tmp.setGracefulCleanup();
-    this.tmpAppointments = tmp.fileSync({
-      name: moment().format('YYYY-MM-DD') + '-maiia-rdv.csv',
-    });
-    this.tmpTimeSlots = tmp.fileSync({
-      name: moment().format('YYYY-MM-DD') + '-maiia-plages-horaires.csv',
-    });
-    this.tmpZip = tmp.fileSync();
+    const tmpDir = os.tmpdir();
+    this.tmpAppointments = path.join(
+      tmpDir,
+      moment().format('YYYY-MM-DD') + '-maiia-rdv.csv',
+    );
+    this.tmpTimeSlots = path.join(
+      tmpDir,
+      moment().format('YYYY-MM-DD') + '-maiia-plages-horaires.csv',
+    );
+
+    this.tmpZip = tmp.tmpNameSync();
 
     this.csvWriterAppointments = createArrayCsvWriter({
       alwaysQuote: true,
       header: appointmentsHeader,
-      path: this.tmpAppointments.name,
+      path: this.tmpAppointments,
     });
     this.csvWriterTimeslots = createArrayCsvWriter({
       header: timeslotsHeader,
       alwaysQuote: true,
-      path: this.tmpTimeSlots.name,
+      path: this.tmpTimeSlots,
     });
   }
 
-  public async export() {
+  public async export(): Promise<void> {
     log.info(ENVIRONMENT);
 
     // Connection URL
@@ -121,10 +139,9 @@ class VaccinationStatsExporter {
     } catch (err) {
       log.error(err.stack);
     } finally {
-      log.info('remove tmp files');
-      this.tmpZip.removeCallback();
-      this.tmpAppointments.removeCallback();
-      this.tmpTimeSlots.removeCallback();
+      fs.unlinkSync(this.tmpAppointments);
+      fs.unlinkSync(this.tmpTimeSlots);
+      fs.unlinkSync(this.tmpZip);
       client.close();
     }
   }
@@ -148,7 +165,7 @@ class VaccinationStatsExporter {
     end.setDate(end.getDate() + 57);
     end.setHours(0, 0, 0, 0);
 
-    log.info('fetch timeSlots for center ' + center._id);
+    log.info('fetch timeSlots for center : ' + center._id);
     const timeSlotCursor = this.db.collection('timeSlot').aggregate([
       {
         $match: {
@@ -194,13 +211,8 @@ class VaccinationStatsExporter {
       const timeSlot = await timeSlotCursor.next();
       values.push(timeSlot._id);
       values.push(center.externalId || 'GID MANQUANT');
-      values.push(center.name);
-      values.push(
-        (center.publicInformation &&
-          center.publicInformation.address &&
-          center.publicInformation.address.zipCode) ||
-          '',
-      );
+      values.push(center.name.trim());
+      values.push(getZipCode(center));
       values.push(Math.ceil(timeSlot.value / 60));
       values.push(agendaCount);
 
@@ -243,13 +255,8 @@ class VaccinationStatsExporter {
       values.push(moment(appointment.creationDate).format('YYYY-MM-DD'));
       values.push(moment(appointment.startDate).format('YYYY-MM-DD'));
       values.push(center.externalId || 'GID MANQUANT');
-      values.push(center.name);
-      values.push(
-        (center.publicInformation &&
-          center.publicInformation.address &&
-          center.publicInformation.address.zipCode) ||
-          '',
-      );
+      values.push(center.name.trim());
+      values.push(getZipCode(center));
       values.push(appointment.consultationReason.name);
       values.push(injectionTypes[appointment.consultationReason.injectionType]);
       values.push(applicationTypes[appointment.applicationType] || 'web_pro');
@@ -280,10 +287,10 @@ class VaccinationStatsExporter {
   private async zipAndUpload() {
     log.info('create zip');
     const zip = new AdmZip();
-    const zipName = this.tmpZip.name;
-    zip.addLocalFile(this.tmpAppointments.name);
-    zip.addLocalFile(this.tmpTimeSlots.name);
-    zip.writeZip(this.tmpZip.name);
+    const zipName = this.tmpZip;
+    zip.addLocalFile(this.tmpAppointments);
+    zip.addLocalFile(this.tmpTimeSlots);
+    zip.writeZip(this.tmpZip);
 
     log.info('upload to ftp');
     const config = {
