@@ -1,7 +1,6 @@
 {
   "name": "@maiia-services/vaccination-stats-exporter",
   "version": "0.0.1",
-  "license": "MIT",
   "scripts": {
     "dev": "yarn watch",
     "build": "yarn build-ts && yarn lint",
