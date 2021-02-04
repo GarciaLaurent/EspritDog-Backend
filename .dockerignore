@@ -1,0 +1,9 @@
+node_modules
+examples
+dist
+**/dist
+.env
+.scannerwork
+docker-compose.yaml
+deployment/**/*
+charts/**/*
