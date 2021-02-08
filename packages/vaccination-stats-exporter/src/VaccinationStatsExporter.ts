@@ -103,15 +103,13 @@ class VaccinationStatsExporter {
 
     // Connection URL
     const url = process.env.DB_URL;
-    // Database Name
-    const dbName = process.env.DB_NAME;
     const client = new MongoClient(url, { useNewUrlParser: true });
 
     try {
       // Use connect method to connect to the Server
       await client.connect();
 
-      this.db = client.db(dbName);
+      this.db = client.db();
 
       // get vaccination specility id
       const spe = await this.db
