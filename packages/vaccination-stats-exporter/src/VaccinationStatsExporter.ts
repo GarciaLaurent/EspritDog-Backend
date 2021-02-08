@@ -10,7 +10,9 @@ import { ENVIRONMENT } from './util/secrets';
 import fs from 'fs';
 import moment from 'moment';
 import { CsvWriter } from 'csv-writer/src/lib/csv-writer';
+import { IncomingWebhook } from '@slack/webhook';
 
+const webhook = new IncomingWebhook(process.env.MAIIA_SERVICES_SLACK);
 interface Mapping {
   [propertyName: string]: string;
 }
@@ -56,7 +58,7 @@ const getZipCode = (center: {
     (center.publicInformation &&
       center.publicInformation.address &&
       center.publicInformation.address.zipCode &&
-      center.publicInformation.address.zipCode.trim()) ||
+      center.publicInformation.address.zipCode.trim().padStart(5, '0')) ||
     ''
   );
 };
@@ -136,8 +138,28 @@ class VaccinationStatsExporter {
       }
 
       await this.zipAndUpload();
+
+      await webhook.send({
+        text: 'Génération des stats de vaccination ' + (ENVIRONMENT || ''),
+        attachments: [
+          {
+            color: '#2eb886',
+            title: 'Succès',
+          },
+        ],
+      });
     } catch (err) {
       log.error(err.stack);
+      await webhook.send({
+        text: 'Génération des stats de vaccination',
+        attachments: [
+          {
+            color: '#D00000',
+            title: 'Erreur',
+            text: err.stack,
+          },
+        ],
+      });
     } finally {
       fs.unlinkSync(this.tmpAppointments);
       fs.unlinkSync(this.tmpTimeSlots);
@@ -151,6 +173,8 @@ class VaccinationStatsExporter {
    * @param center
    */
   private async writeTimeSlotsLines(center: any) {
+    const availableHoursByDay = new Map();
+
     const agendaCount = await this.db
       .collection('agendaSettings')
       .countDocuments({
@@ -165,57 +189,133 @@ class VaccinationStatsExporter {
     end.setDate(end.getDate() + 57);
     end.setHours(0, 0, 0, 0);
 
-    log.info('fetch timeSlots for center : ' + center._id);
-    const timeSlotCursor = this.db.collection('timeSlot').aggregate([
-      {
-        $match: {
-          centerId: center._id.toString(),
-          startDateTime: { $gt: start, $lt: end },
-          'consultationReasons.injectionType': { $in: ['FIRST', 'SECOND'] },
+    const agendaCursor = await this.db.collection('agendaSettings').find({
+      centerId: center._id.toString(),
+      status: 'ACTIVE',
+    });
+
+    while (await agendaCursor.hasNext()) {
+      const agenda = await agendaCursor.next();
+      log.info(
+        'fetch availabilities  for agenda : ' + agenda._id + ' ' + center._id,
+      );
+      const appointments = await this.db
+        .collection('appointment')
+        .aggregate([
+          {
+            $match: {
+              practitionerId: agenda.practitionerId,
+              centerId: agenda.centerId,
+              status: 'ACTIVE',
+              startDate: { $gt: start, $lt: end },
+              appointmentStatus: { $ne: 'CANCELLED' },
+            },
+          },
+          {
+            $addFields: {
+              day: {
+                $dateToString: {
+                  date: '$startDate',
+                  format: '%Y-%m-%d',
+                },
+              },
+            },
+          },
+          {
+            $project: {
+              duration: {
+                $divide: [{ $subtract: ['$endDate', '$startDate'] }, 60000],
+              },
+              day: '$day',
+            },
+          },
+          {
+            $group: {
+              _id: '$day',
+              value: {
+                $sum: '$duration',
+              },
+            },
+          },
+        ])
+        .toArray();
+
+      const timeSlotCursor = this.db.collection('timeSlot').aggregate([
+        {
+          $match: {
+            practitionerId: agenda.practitionerId,
+            centerId: agenda.centerId,
+            startDateTime: { $gt: start, $lt: end },
+            'consultationReasons.injectionType': { $in: ['FIRST', 'SECOND'] },
+          },
         },
-      },
-      {
-        $addFields: {
-          startDate: {
-            $dateToString: {
-              date: '$startDateTime',
-              format: '%Y-%m-%d',
+        {
+          $addFields: {
+            startDate: {
+              $dateToString: {
+                date: '$startDateTime',
+                format: '%Y-%m-%d',
+              },
             },
           },
         },
-      },
-      {
-        $project: {
-          duration: {
-            $divide: [{ $subtract: ['$endDateTime', '$startDateTime'] }, 60000],
-          },
-          startDate: '$startDate',
-        },
-      },
-      {
-        $group: {
-          _id: '$startDate',
-          value: {
-            $sum: '$duration',
+        {
+          $project: {
+            duration: {
+              $divide: [
+                { $subtract: ['$endDateTime', '$startDateTime'] },
+                60000,
+              ],
+            },
+            startDate: '$startDate',
           },
         },
-      },
-      {
-        $sort: { _id: 1 },
-      },
-    ]);
+        {
+          $group: {
+            _id: '$startDate',
+            value: {
+              $sum: '$duration',
+            },
+          },
+        },
+        {
+          $sort: { _id: 1 },
+        },
+      ]);
 
-    while (await timeSlotCursor.hasNext()) {
+      while (await timeSlotCursor.hasNext()) {
+        const timeSlot = await timeSlotCursor.next();
+        const agendaAppointmentsForDay = appointments.find(
+          (e) => e._id === timeSlot._id,
+        );
+        const agendaAppointmentsForDayDuration = agendaAppointmentsForDay
+          ? agendaAppointmentsForDay.value
+          : 0;
+        let availableHoursForAgenda = Math.ceil(
+          (timeSlot.value - agendaAppointmentsForDayDuration) / 60,
+        );
+        if (availableHoursForAgenda < 0) {
+          availableHoursForAgenda = 0;
+        }
+
+        const currentAvailableHoursByDay =
+          availableHoursByDay.get(timeSlot._id) || 0;
+
+        availableHoursByDay.set(
+          timeSlot._id,
+          availableHoursForAgenda + currentAvailableHoursByDay,
+        );
+      }
+    }
+
+    for (const key of availableHoursByDay.keys()) {
       const values = [];
-
-      const timeSlot = await timeSlotCursor.next();
-      values.push(timeSlot._id);
+      values.push(key);
       values.push(center.externalId || 'GID MANQUANT');
       values.push(center.name.trim());
       values.push(getZipCode(center));
-      values.push(Math.ceil(timeSlot.value / 60));
+      values.push(availableHoursByDay.get(key));
       values.push(agendaCount);
-
       await this.csvWriterTimeslots.writeRecords([values]);
     }
   }
