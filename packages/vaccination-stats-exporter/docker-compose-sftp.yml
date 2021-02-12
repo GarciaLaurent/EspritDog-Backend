@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  sftp:
+    image: emberstack/sftp
+    container_name: sftp
+    ports:
+      - "22:22"
+    volumes:
+      - "./ftp:/home/demo/sftp"
