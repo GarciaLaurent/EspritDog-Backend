@@ -410,6 +410,7 @@ class VaccinationStatsExporter {
       })
       .catch((err: Error) => {
         log.error(err.message);
+        return;
       });
   }
 }
