@@ -132,9 +132,7 @@ export class PoEditorScraper {
         const project = this.projects[index];
 
         // new JSON file
-        const newJSONFile = new URL(
-          'file://' + this.path + '/locales/fr/merged.json',
-        );
+        const newJSONFile = `${this.path}/locales/fr/merged.json`;
         const newJSONContent = await fs.readFileSync(newJSONFile, 'utf8');
         console.log(
           '[INFO] Read new file content for ' + newJSONFile,
@@ -142,9 +140,7 @@ export class PoEditorScraper {
         );
 
         // OLD json file
-        const oldJSONFile = new URL(
-          'file://' + this.pathOld + '/locales/fr/merged.json',
-        );
+        const oldJSONFile = `${this.pathOld}/locales/fr/merged.json`;
         const oldJSONContent = await fs.readFileSync(oldJSONFile, 'utf8');
         console.log(
           '[INFO] Read old file content for ' + oldJSONFile,
