@@ -21,6 +21,7 @@ const urlPoEditor = keys.SLACK_HOOK_PO_EDITOR;
 // This argument can be a channel ID, a DM ID, a MPDM ID, or a group ID
 // const channel = keys.SLACK_CHANNEL;
 
+// const webhook = new IncomingWebhook(urlMobileTech);
 const webhook = new IncomingWebhook(url);
 
 export class Slack {
