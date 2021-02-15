@@ -19,11 +19,14 @@
         "watch-node-backtest": "nodemon --verbose dist/backtest.js",
         "watch-test": "yarn test -- --watchAll",
         "watch-ts": "tsc -w",
-        "sonar": "node sonar-project.js"
+        "sonar": "node sonar-project.js",
+        "postinstall": "npx patch-package"
     },
     "dependencies": {
         "@docavenue/nodejs": "^0.0.191",
-        "lodash": "^4.17.20"
+        "lodash": "^4.17.20",
+        "patch-package": "^6.2.2",
+        "postinstall-postinstall": "^2.1.0"
     },
     "devDependencies": {
         "@types/body-parser": "^1.17.1",
