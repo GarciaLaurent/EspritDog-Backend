@@ -142,7 +142,7 @@ node {
       project: 'microservices'
     ]
     // heal upgrade --install
-    // helm.releaseChart(branchName,extraArgs)
+    helm.releaseChart(branchName,extraArgs)
   }
 }
 
