@@ -21,7 +21,7 @@
         "watch-ts": "tsc -w",
         "sonar": "node sonar-project.js",
         "postinstall": "npx patch-package",
-        "start:vaccination-stats-exporter": "lerna run start --stream --scope @maiia/vaccination-stats-exporter"
+        "start:vaccination-stats-exporter": "lerna run start --stream --scope @maiia-microservices/vaccination-stats-exporter"
     },
     "dependencies": {
         "@docavenue/nodejs": "^0.0.191",
