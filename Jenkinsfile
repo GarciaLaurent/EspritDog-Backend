@@ -79,7 +79,7 @@ node {
     helm = lib.HelmHelper.new(app,this,repo,namespace, k8Context, k8url, k8Creds, helmRepoURL)
   }
 
-  def imageName = "${registryHost}/${app}/${app}-services"
+  def imageName = "${registryHost}/${app}/${app}-microservices"
 
   if (!(branchName.startsWith("rc-") || branchName == "master" || branchName == "int" || branchName == "staging")) {
     try {
@@ -135,11 +135,11 @@ node {
     // helm values override
     Map extraArgs = [
       buildNumbers: [
-        services: env.BUILD_NUMBER
+        microservices: env.BUILD_NUMBER
       ],
       branchName: branchName,
       buildNumber: env.BUILD_NUMBER,
-      project: 'services'
+      project: 'microservices'
     ]
     // heal upgrade --install
     // helm.releaseChart(branchName,extraArgs)
