@@ -1,4 +1,4 @@
-FROM node:14-alpine
+FROM node:14
 
 ENV HTTP_PROXY=http://isp-ceg.emea.cegedim.grp:3128
 ENV HTTPS_PROXY=http://isp-ceg.emea.cegedim.grp:3128
