@@ -1,5 +1,5 @@
 {
-  "name": "@maiia-services/vaccination-stats-exporter",
+  "name": "@maiia-microservices/vaccination-stats-exporter",
   "version": "0.0.1",
   "scripts": {
     "dev": "yarn watch",

@@ -1,5 +1,5 @@
 {
-    "name": "maiia-services",
+    "name": "maiia-microservices",
     "version": "0.1.0",
     "description": "A starting point for Node.js express apps with TypeScript",
     "private": true,
@@ -20,7 +20,8 @@
         "watch-test": "yarn test -- --watchAll",
         "watch-ts": "tsc -w",
         "sonar": "node sonar-project.js",
-        "postinstall": "npx patch-package"
+        "postinstall": "npx patch-package",
+        "start:vaccination-stats-exporter": "lerna run start --stream --scope @maiia/vaccination-stats-exporter"
     },
     "dependencies": {
         "@docavenue/nodejs": "^0.0.191",

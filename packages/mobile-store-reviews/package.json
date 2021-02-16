@@ -1,5 +1,5 @@
 {
-  "name": "@maiia-services/mobile-store-reviews",
+  "name": "@maiia-microservices/mobile-store-reviews",
   "version": "0.2.0",
   "description": "BOT mobile par la team mobile (reviews Slack, modifs PO editor, etc...)",
   "scripts": {
