@@ -1616,7 +1616,7 @@
   resolved "https://artefacts.docavenue.com/artifactory/api/npm/npm-general/@slack/types/-/types-1.10.0.tgz#cbf7d83e1027f4cbfd13d6b429f120c7fb09127a"
   integrity sha1-y/fYPhAn9Mv9E9a0KfEgx/sJEno=
 
-"@slack/webhook@^6.0.0":
+"@slack/webhook@6.0.0", "@slack/webhook@^6.0.0":
   version "6.0.0"
   resolved "https://artefacts.docavenue.com/artifactory/api/npm/npm-general/@slack/webhook/-/webhook-6.0.0.tgz#844593c1e864a966e549f60bb640586628f3c1c4"
   integrity sha1-hEWTwehkqWblSfYLtkBYZijzwcQ=
@@ -2240,7 +2240,7 @@ anymatch@^3.0.3:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
 
-app-store-scraper@^0.16.3:
+app-store-scraper@0.16.3:
   version "0.16.3"
   resolved "https://artefacts.docavenue.com/artifactory/api/npm/npm-general/app-store-scraper/-/app-store-scraper-0.16.3.tgz#949231644f8eec50018bc1e01c04a6974cc52db8"
   integrity sha1-lJIxZE+O7FABi8HgHASml0zFLbg=
@@ -3155,7 +3155,7 @@ compressible@^2.0.12, compressible@~2.0.16:
   dependencies:
     mime-db ">= 1.43.0 < 2"
 
-compression@^1.7.4:
+compression@1.7.4:
   version "1.7.4"
   resolved "https://artefacts.docavenue.com/artifactory/api/npm/npm-general/compression/-/compression-1.7.4.tgz#95523eff170ca57c29a0ca41e6fe131f41e5bb8f"
   integrity sha1-lVI+/xcMpXwpoMpB5v4TH0Hlu48=
@@ -4027,7 +4027,7 @@ error-ex@^1.2.0, error-ex@^1.3.1:
   dependencies:
     is-arrayish "^0.2.1"
 
-errorhandler@^1.5.1:
+errorhandler@1.5.1:
   version "1.5.1"
   resolved "https://artefacts.docavenue.com/artifactory/api/npm/npm-general/errorhandler/-/errorhandler-1.5.1.tgz#b9ba5d17cf90744cd1e851357a6e75bf806a9a91"
   integrity sha1-ubpdF8+QdEzR6FE1em51v4BqmpE=
@@ -4454,7 +4454,7 @@ expect@^26.6.2:
     jest-message-util "^26.6.2"
     jest-regex-util "^26.0.0"
 
-express@^4.17.1:
+express@4.17.1:
   version "4.17.1"
   resolved "https://artefacts.docavenue.com/artifactory/api/npm/npm-general/express/-/express-4.17.1.tgz#4491fc38605cf51f8629d39c2b5d026f98a4c134"
   integrity sha1-RJH8OGBc9R+GKdOcK10Cb5ikwTQ=
@@ -4751,7 +4751,7 @@ find-yarn-workspace-root@^1.2.1:
     fs-extra "^4.0.3"
     micromatch "^3.1.4"
 
-firebase-admin@^9.4.2:
+firebase-admin@9.4.2:
   version "9.4.2"
   resolved "https://artefacts.docavenue.com/artifactory/api/npm/npm-general/firebase-admin/-/firebase-admin-9.4.2.tgz#190d5d7ca5e3f251d99503feb6e05e7ab1623851"
   integrity sha1-GQ1dfKXj8lHZlQP+tuBeerFiOFE=
@@ -5259,7 +5259,7 @@ google-p12-pem@^3.0.3:
   dependencies:
     node-forge "^0.10.0"
 
-google-play-scraper@^8.0.2:
+google-play-scraper@8.0.2:
   version "8.0.2"
   resolved "https://artefacts.docavenue.com/artifactory/api/npm/npm-general/google-play-scraper/-/google-play-scraper-8.0.2.tgz#ea1b2a07affeb6d99d875dd9471a891fdd2eba5f"
   integrity sha1-6hsqB6/+ttmdh13ZRxqJH90uul8=
@@ -6555,7 +6555,7 @@ json-bigint@^1.0.0:
   dependencies:
     bignumber.js "^9.0.0"
 
-json-concat@^0.0.1:
+json-concat@0.0.1:
   version "0.0.1"
   resolved "https://artefacts.docavenue.com/artifactory/api/npm/npm-general/json-concat/-/json-concat-0.0.1.tgz#4f6303c9cac94eba30bbff91d13abea0118c97e2"
   integrity sha1-T2MDycrJTrowu/+R0Tq+oBGMl+I=
@@ -7530,7 +7530,7 @@ mute-stream@~0.0.4:
   resolved "https://artefacts.docavenue.com/artifactory/api/npm/npm-general/mute-stream/-/mute-stream-0.0.8.tgz#1630c42b2251ff81e2a283de96a5497ea92e5e0d"
   integrity sha1-FjDEKyJR/4HiooPelqVJfqkuXg0=
 
-mv@^2.1.1:
+mv@2.1.1:
   version "2.1.1"
   resolved "https://artefacts.docavenue.com/artifactory/api/npm/npm-general/mv/-/mv-2.1.1.tgz#ae6ce0d6f6d5e0a4f7d893798d03c1ea9559b6a2"
   integrity sha1-rmzg1vbV4KT32JN5jQPB6pVZtqI=
@@ -7610,7 +7610,7 @@ nice-try@^1.0.4:
   resolved "https://artefacts.docavenue.com/artifactory/api/npm/npm-general/nice-try/-/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"
   integrity sha1-ozeKdpbOfSI+iPybdkvX7xCJ42Y=
 
-node-cron@^2.0.3:
+node-cron@2.0.3:
   version "2.0.3"
   resolved "https://artefacts.docavenue.com/artifactory/api/npm/npm-general/node-cron/-/node-cron-2.0.3.tgz#b9649784d0d6c00758410eef22fa54a10e3f602d"
   integrity sha1-uWSXhNDWwAdYQQ7vIvpUoQ4/YC0=
@@ -8230,7 +8230,7 @@ pascalcase@^0.1.1:
   resolved "https://artefacts.docavenue.com/artifactory/api/npm/npm-general/pascalcase/-/pascalcase-0.1.1.tgz#b363e55e8006ca6fe21784d2db22bd15d7917f14"
   integrity sha1-s2PlXoAGym/iF4TS2yK9FdeRfxQ=
 
-patch-package@^6.2.2:
+patch-package@6.2.2, patch-package@^6.2.2:
   version "6.2.2"
   resolved "https://artefacts.docavenue.com/artifactory/api/npm/npm-general/patch-package/-/patch-package-6.2.2.tgz#71d170d650c65c26556f0d0fbbb48d92b6cc5f39"
   integrity sha1-cdFw1lDGXCZVbw0Pu7SNkrbMXzk=
@@ -8403,7 +8403,7 @@ posix-character-classes@^0.1.0:
   resolved "https://artefacts.docavenue.com/artifactory/api/npm/npm-general/posix-character-classes/-/posix-character-classes-0.1.1.tgz#01eac0fe3b5af71a2a6c02feabb8c1fef7e00eab"
   integrity sha1-AerA/jta9xoqbAL+q7jB/vfgDqs=
 
-postinstall-postinstall@^2.1.0:
+postinstall-postinstall@2.1.0, postinstall-postinstall@^2.1.0:
   version "2.1.0"
   resolved "https://artefacts.docavenue.com/artifactory/api/npm/npm-general/postinstall-postinstall/-/postinstall-postinstall-2.1.0.tgz#4f7f77441ef539d1512c40bd04c71b06a4704ca3"
   integrity sha1-T393RB71OdFRLEC9BMcbBqRwTKM=
@@ -8806,7 +8806,7 @@ rechoir@^0.6.2:
   dependencies:
     resolve "^1.1.6"
 
-recursive-diff@^1.0.8:
+recursive-diff@1.0.8:
   version "1.0.8"
   resolved "https://artefacts.docavenue.com/artifactory/api/npm/npm-general/recursive-diff/-/recursive-diff-1.0.8.tgz#45078df142af0085915971c5af17cd5a560086d5"
   integrity sha1-RQeN8UKvAIWRWXHFrxfNWlYAhtU=
@@ -9057,17 +9057,17 @@ rimraf@2.6.3:
   dependencies:
     glob "^7.1.3"
 
+rimraf@3.0.2, rimraf@^3.0.0, rimraf@^3.0.2:
+  version "3.0.2"
+  resolved "https://artefacts.docavenue.com/artifactory/api/npm/npm-general/rimraf/-/rimraf-3.0.2.tgz#f1a5402ba6220ad52cc1282bac1ae3aa49fd061a"
+  integrity sha1-8aVAK6YiCtUswSgrrBrjqkn9Bho=
+  dependencies:
+    glob "^7.1.3"
+
 rimraf@^2.5.4, rimraf@^2.6.2, rimraf@^2.6.3:
   version "2.7.1"
   resolved "https://artefacts.docavenue.com/artifactory/api/npm/npm-general/rimraf/-/rimraf-2.7.1.tgz#35797f13a7fdadc566142c29d4f07ccad483e3ec"
   integrity sha1-NXl/E6f9rcVmFCwp1PB8ytSD4+w=
-  dependencies:
-    glob "^7.1.3"
-
-rimraf@^3.0.0, rimraf@^3.0.2:
-  version "3.0.2"
-  resolved "https://artefacts.docavenue.com/artifactory/api/npm/npm-general/rimraf/-/rimraf-3.0.2.tgz#f1a5402ba6220ad52cc1282bac1ae3aa49fd061a"
-  integrity sha1-8aVAK6YiCtUswSgrrBrjqkn9Bho=
   dependencies:
     glob "^7.1.3"
 

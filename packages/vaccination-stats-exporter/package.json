@@ -10,7 +10,7 @@
     "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"yarn watch-ts\" \"yarn watch-node\"",
     "watch-node": "nodemon dist/index.js",
     "watch-ts": "tsc -w",
-    "start": "node dist/index.js"
+    "start": "node --unhandled-rejections=strict dist/index.js"
   },
   "dependencies": {
     "@slack/webhook": "^6.0.0",
