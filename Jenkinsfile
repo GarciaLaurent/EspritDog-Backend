@@ -75,13 +75,23 @@ node {
         k8Creds = "maiia-integration"
         registryHost = "artefacts-maiia.cegedim.cloud"
         sh 'sed -i -e "s|http://isp-ceg.emea.cegedim.grp:3128||g" Dockerfile'
+    } else if (branchName == ("anonymous")) {
+        app = "maiia"
+        k8url = "https://k8s-eb.cegedim.cloud/k8s/clusters/c-hfb4r"
+        k8Context = "maiia-integration"
+        namespace = "maiia-anonymous"
+        imageTag = "${branchName}-${env.BUILD_NUMBER}"
+        latestImageTag = "anonymous-latest"
+        k8Creds = "maiia-integration"
+        registryHost = "artefacts-maiia.cegedim.cloud"
+        sh 'sed -i -e "s|http://isp-ceg.emea.cegedim.grp:3128||g" Dockerfile'
     }
     helm = lib.HelmHelper.new(app,this,repo,namespace, k8Context, k8url, k8Creds, helmRepoURL)
   }
 
   def imageName = "${registryHost}/${app}/${app}-microservices"
 
-  if (!(branchName.startsWith("rc-") || branchName == "master" || branchName == "int" || branchName == "staging")) {
+  if (!(branchName.startsWith("rc-") || branchName == "master" || branchName == "int" || branchName == "staging" || branchName == "anonymous")) {
     try {
       gitlabCommitStatus {
         stage('SonarQube analysis') {
