@@ -383,7 +383,11 @@ class VaccinationStatsExporter {
   }
 
   private async zipAndUpload() {
-    log.info('create zip');
+    log.info(
+      'create zip ' +
+        moment().subtract(1, 'days').format('YYYY-MM-DD') +
+        '-maiia.zip',
+    );
     const zip = new AdmZip();
     const zipName = this.tmpZip;
     zip.addLocalFile(this.tmpAppointments);
@@ -403,14 +407,17 @@ class VaccinationStatsExporter {
     await sftp
       .connect(config)
       .then(() => {
-        return sftp.put(data, moment().format('YYYY-MM-DD') + '-maiia.zip');
+        return sftp.put(
+          data,
+          moment().subtract(1, 'days').format('YYYY-MM-DD') + '-maiia.zip',
+        );
       })
       .then(() => {
         return sftp.end();
       })
       .catch((err: Error) => {
         log.error(err.message);
-        return;
+        throw err;
       });
   }
 }
