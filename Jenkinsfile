@@ -85,13 +85,53 @@ node {
         k8Creds = "maiia-integration"
         registryHost = "artefacts-maiia.cegedim.cloud"
         sh 'sed -i -e "s|http://isp-ceg.emea.cegedim.grp:3128||g" Dockerfile'
-    }
+    } else if (branchName == ("f1")) {
+        app = "maiia"
+        k8url = "https://k8s-eb.cegedim.cloud/k8s/clusters/c-hfb4r"
+        k8Context = "maiia-integration"
+        namespace = "maiia-f1"
+        imageTag = "${branchName}-${env.BUILD_NUMBER}"
+        latestImageTag = "f1-latest"
+        k8Creds = "maiia-integration"
+        registryHost = "artefacts-maiia.cegedim.cloud"
+        sh 'sed -i -e "s|http://isp-ceg.emea.cegedim.grp:3128||g" Dockerfile'
+    } else if (branchName == ("f2")) {
+        app = "maiia"
+        k8url = "https://k8s-eb.cegedim.cloud/k8s/clusters/c-hfb4r"
+        k8Context = "maiia-integration"
+        namespace = "maiia-f2"
+        imageTag = "${branchName}-${env.BUILD_NUMBER}"
+        latestImageTag = "f2-latest"
+        k8Creds = "maiia-integration"
+        registryHost = "artefacts-maiia.cegedim.cloud"
+        sh 'sed -i -e "s|http://isp-ceg.emea.cegedim.grp:3128||g" Dockerfile'
+    } else if (branchName == ("f3")) {
+        app = "maiia"
+        k8url = "https://k8s-eb.cegedim.cloud/k8s/clusters/c-hfb4r"
+        k8Context = "maiia-integration"
+        namespace = "maiia-f3"
+        imageTag = "${branchName}-${env.BUILD_NUMBER}"
+        latestImageTag = "f3-latest"
+        k8Creds = "maiia-integration"
+        registryHost = "artefacts-maiia.cegedim.cloud"
+        sh 'sed -i -e "s|http://isp-ceg.emea.cegedim.grp:3128||g" Dockerfile'
+    } else if (branchName == ("f4")) {
+        app = "maiia"
+        k8url = "https://k8s-eb.cegedim.cloud/k8s/clusters/c-hfb4r"
+        k8Context = "maiia-integration"
+        namespace = "maiia-f4"
+        imageTag = "${branchName}-${env.BUILD_NUMBER}"
+        latestImageTag = "f4-latest"
+        k8Creds = "maiia-integration"
+        registryHost = "artefacts-maiia.cegedim.cloud"
+        sh 'sed -i -e "s|http://isp-ceg.emea.cegedim.grp:3128||g" Dockerfile'
+    }  
     helm = lib.HelmHelper.new(app,this,repo,namespace, k8Context, k8url, k8Creds, helmRepoURL)
   }
 
   def imageName = "${registryHost}/${app}/${app}-microservices"
 
-  if (!(branchName.startsWith("rc-") || branchName == "master" || branchName == "int" || branchName == "staging" || branchName == "anonymous")) {
+  if (!(branchName.startsWith("rc-") || branchName == "master" || branchName == "int" || branchName == "staging" || branchName == "anonymous" || branchName == "f1" || branchName == "f2" || branchName == "f3" || branchName == "f4")) {
     try {
       gitlabCommitStatus {
         stage('SonarQube analysis') {
