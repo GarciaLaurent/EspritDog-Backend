@@ -1,0 +1,32 @@
+{
+  "name": "@hackteam4-bo/api",
+  "version": "0.0.1",
+  "license": "MIT",
+  "scripts": {
+    "dev": "yarn watch",
+    "build": "yarn build-ts && yarn lint",
+    "build-ts": "yarn build:clean && tsc --declaration",
+    "build:clean": "rimraf dist",
+    "lint": "tsc --noEmit && eslint \"**/*.{js,ts}\" --quiet --fix",
+    "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"yarn watch-ts\" \"yarn watch-node\"",
+    "watch-node": "nodemon dist/server.js",
+    "watch-ts": "tsc -w",
+    "start": "yarn serve",
+    "serve": "node dist/server.js"
+  },
+  "dependencies": {
+    "@typegoose/typegoose": "^7.6.0",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "errorhandler": "^1.5.1",
+    "express": "^4.17.1",
+    "mongoose": "^5.12.3",
+    "socket.io": "2.3.0"
+  },
+  "devDependencies": {
+    "@types/compression": "^1.7.0",
+    "@types/errorhandler": "^1.5.0",
+    "@types/express": "^4.17.11",
+    "@types/socket.io": "^2.1.13"
+  }
+}
