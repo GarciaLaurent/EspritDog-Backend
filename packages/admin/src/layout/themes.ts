@@ -47,7 +47,7 @@ export const darkTheme = {
 export const lightTheme = {
   palette: {
     primary: {
-      main: '#4f3cc9',
+      main: '#64C9C3',
     },
     secondary: {
       light: '#5f5fc4',
@@ -84,7 +84,7 @@ export const lightTheme = {
     MuiButton: {
       contained: {
         backgroundColor: '#fff',
-        color: '#4f3cc9',
+        color: '#64C9C3',
         boxShadow: 'none',
       },
     },
@@ -111,7 +111,7 @@ export const lightTheme = {
     MuiAppBar: {
       colorSecondary: {
         color: '#808080',
-        backgroundColor: '#fff',
+        backgroundColor: '#64C9C3',
       },
     },
     MuiLinearProgress: {
