@@ -25,7 +25,7 @@ const mongoUrl = MONGODB_URI;
      */
     app.listen(3333, () => {
       console.log(
-        '  App is running at http://localhost:%d in %s mode',
+        '  App is running at http://localhost:%d in %s mode', //ex: http://localhost:3333/Orders
         // app.get('port'),
         // app.get('env'),
       );

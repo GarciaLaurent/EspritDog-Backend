@@ -7,6 +7,7 @@ import socketIO, { Socket } from 'socket.io';
 import http from 'http';
 import errorHandler from 'errorhandler';
 import * as orderController from './controllers/order';
+import * as userController from './controllers/user';
 
 // Create Express server
 const expressApp = express();
@@ -36,6 +37,11 @@ expressApp.get('/Orders', orderController.listOrders);
 expressApp.post('/Orders', orderController.createOrders);
 expressApp.get('/Orders/:id', orderController.getOrder);
 expressApp.put('/Orders/:id', orderController.updateOrder);
+
+expressApp.post('/user', userController.createUser);
+expressApp.post('/login', userController.logIn);
+expressApp.post('/change-password', userController.changeUserPassword);
+expressApp.delete('/user', userController.deleteUser);
 
 const app = http.createServer(expressApp);
 const io = socketIO(app);
