@@ -3,11 +3,11 @@ import compression from 'compression'; // compresses requests
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import socketIO, { Socket } from 'socket.io';
-
 import http from 'http';
 import errorHandler from 'errorhandler';
 import * as orderController from './controllers/order';
 import * as userController from './controllers/user';
+import * as stripeController from './controllers/stripe';
 
 // Create Express server
 const expressApp = express();
@@ -42,6 +42,8 @@ expressApp.post('/user', userController.createUser);
 expressApp.post('/login', userController.logIn);
 expressApp.post('/change-password', userController.changeUserPassword);
 expressApp.delete('/user', userController.deleteUser);
+
+expressApp.post('/create-payment-intent', stripeController.stripePaiement);
 
 const app = http.createServer(expressApp);
 const io = socketIO(app);

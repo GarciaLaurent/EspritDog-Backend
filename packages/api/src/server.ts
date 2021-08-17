@@ -4,14 +4,7 @@ dotenv.config();
 require('source-map-support').install();
 import mongoose from 'mongoose';
 import app from './app';
-import Stripe from 'stripe';
 import { MONGODB_URI } from './util/secrets';
-const stripe = new Stripe(
-  'pk_test_51JPOjkHcR3ufmXpIKyOqPcsGH43UiUOlrYGMZFG15uUIqsRlNLQGnUqr34ugiZNto4E1ltGmqGyt1EFwQ2y1ZUk500CrKyWv3y',
-  {
-    apiVersion: '2020-08-27',
-  },
-);
 const mongoUrl = MONGODB_URI;
 (<any>mongoose).Promise = Promise;
 (async () => {

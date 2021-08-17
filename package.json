@@ -22,9 +22,11 @@
     "sonar": "node sonar-project.js"
   },
   "dependencies": {
-    "lodash": "^4.17.20"
+    "lodash": "^4.17.20",
+    "@stripe/stripe-react-native": "^0.2.0"
   },
   "devDependencies": {
+    "@stripe/stripe-react-native": "^0.2.0",
     "@types/body-parser": "^1.17.1",
     "@types/lodash": "^4.14.168",
     "@types/node": "^12.7.8",
