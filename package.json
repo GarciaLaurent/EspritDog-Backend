@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "lodash": "^4.17.20",
-    "@stripe/stripe-react-native": "^0.2.0"
+    "stripe": "^8.169.0"
   },
   "devDependencies": {
     "@stripe/stripe-react-native": "^0.2.0",
