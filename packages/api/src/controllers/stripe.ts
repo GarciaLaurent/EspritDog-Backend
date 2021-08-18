@@ -7,7 +7,7 @@ const SECRET_KEY =
   'sk_test_51JPOjkHcR3ufmXpIdcBBRPZUVLgJV0hvpJKJb0qAhchKnxSdZDK8zRkfNA1xxJxPcpKjadKVWSYvOuTIZYGPgX7Z002nEwhdlq KEY HERE';
 
 //Confirm the API version from your stripe dashboard
-const stripe = Stripe(SECRET_KEY, { apiVersion: '2020-08-27' });
+const stripe = new Stripe(SECRET_KEY, { apiVersion: '2020-08-27' });
 
 export const stripePaiement = async (req: Request, res: Response) => {
   try {
